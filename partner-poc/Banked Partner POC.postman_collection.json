@@ -1,0 +1,243 @@
+{
+	"info": {
+		"_postman_id": "5422b891-5246-4a98-abe0-8354c9295d9b",
+		"name": "Banked Partner POC",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20348300"
+	},
+	"item": [
+		{
+			"name": "1. Generate a Partner OAuth token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic base64(key:secret)",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"grant_type\" : \"client_credentials\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.banked.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"api",
+						"banked",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "2. Create a Business",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YOUR_PARTNER_TOKEN",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"Example Business\",\n    \"registration_body\": \"UK Companies House\",\n    \"registration_number\": \"123456789\",\n    \"vat_number\": \"123456\",\n    \"registered_address\": {\n        \"line_1\": \"1 Street\",\n        \"city\": \"City\",\n        \"region\": \"State\",\n        \"country\": \"GBR\",\n        \"postal_code\": \"AB1 2CD\"\n    },\n    \"legal_type\": \"Limited Company\",\n    \"website_url\": \"www.example.com\",\n    \"settings\": {\n        \"bank_accounts\": [\n            {\n                \"account_identifier\": \"01000112345678\",\n                \"identifier_type\": \"SortCodeAccountNumber\",\n                \"currency\": \"GBP\"\n            }\n        ],\n        \"support_details\": {\n            \"support_email\": \"help@example.com\"\n        },\n        \"logo_url\": \"http://example.com/png\",\n        \"capabilities\": {\n            \"avios\": false,\n            \"unverified_payable\": false,\n            \"external_refunds\" :false\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.banked.com/partner/v1/businesses",
+					"protocol": "https",
+					"host": [
+						"api",
+						"banked",
+						"com"
+					],
+					"path": [
+						"partner",
+						"v1",
+						"businesses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "3. Generate an Application OAuth token",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Basic base65(key:secret)",
+						"type": "text"
+					},
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"grant_type\" : \"client_credentials\",\n    \"scope\" : \"APPLICATION_ID\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.banked.com/oauth/token",
+					"protocol": "https",
+					"host": [
+						"api",
+						"banked",
+						"com"
+					],
+					"path": [
+						"oauth",
+						"token"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Create a Payment Session",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YOUR_APPLICATION_TOKEN",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"error_url\": \"https://example.com\",\n    \"success_url\": \"https://example.com\",\n    \"line_items\": [\n        {\n            \"name\": \"Accounting services\",\n            \"amount\": 10000,\n            \"quantity\": 1,\n            \"currency\": \"GBP\"\n        }\n    ],\n    \"reference\": \"jhfjhfkjhf\",\n    \"payee\": {\n        \"name\": \"Current Account\",\n        \"account_number\": \"12345678\",\n        \"sort_code\": \"010203\"\n    },\n    \"payer\": {\n        \"name\": \"Jane Doe\",\n        \"email\": \"jane@doe.com\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.banked.com/v2/payment_sessions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"banked",
+						"com"
+					],
+					"path": [
+						"v2",
+						"payment_sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "4. Create a Payment Session Copy",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YOUR_APPLICATION_TOKEN",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"error_url\": \"https://example.com\",\n    \"success_url\": \"https://example.com\",\n    \"line_items\": [\n        {\n            \"name\": \"Accounting services\",\n            \"amount\": 10000,\n            \"quantity\": 1,\n            \"currency\": \"GBP\"\n        }\n    ],\n    \"reference\": \"jhfjhfkjhf\",\n    \"payee\": {\n        \"name\": \"Current Account\",\n        \"account_number\": \"12345678\",\n        \"sort_code\": \"010203\"\n    },\n    \"payer\": {\n        \"name\": \"Jane Doe\",\n        \"email\": \"jane@doe.com\"\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://api.banked.com/v2/payment_sessions",
+					"protocol": "https",
+					"host": [
+						"api",
+						"banked",
+						"com"
+					],
+					"path": [
+						"v2",
+						"payment_sessions"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "5. Check the status of a Payment Session",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer YOUR_APPLICATION_TOKEN",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "https://api.banked.com/v2/payment_sessions/PAYMENT_ID",
+					"protocol": "https",
+					"host": [
+						"api",
+						"banked",
+						"com"
+					],
+					"path": [
+						"v2",
+						"payment_sessions",
+						"PAYMENT_ID"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
